@@ -1,0 +1,1 @@
+{"frames":[{"character_number":0,"end_character_number":0,"end_line_number":0,"file":"","func":"WG_maps(filename, outdir, lookupfile)","line_number":0}],"message":"Error in WG_maps(filename, outdir, lookupfile) : \n  no loop for break/next, jumping to top level\n"}
