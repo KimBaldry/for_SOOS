@@ -4,7 +4,7 @@ author: "Kimberlee Baldry"
 date: "15 February 2021"
 output: html_document
 ---
-The "mapSOOSWG" package was written to semi-automate the creation of maps for SOOS reporting purposes. The package was created with some flexibility. This documentation details the functions, provide examples on how to use them and illustrates where map style can be altered slightly. 
+The "mapSOOSWG" package was written to semi-automate the creation of maps for SOOS reporting purposes. The package was created with some flexibility. This documentation details the functions, provide examples on how to use them and illustrates where map style can be altered slightly. The package runs off the SOOS AirTable set up. If you change the column names the code will break.
 
 ## Installation
 The package is located on GitHub (https://github.com/KimBaldry/mapSOOSWG). To access the package you need to have "devtools" installed. 
@@ -13,6 +13,7 @@ The package can then be downloaded using the folliwing code:
 ```{r, eval = F, echo = T}
 install.packages("devtools")
 library(devtools)
+# it is OK to skip updates when prompted 
 devtools::install_github("KimBaldry/mapSOOSWG")
 ```
 
@@ -26,14 +27,14 @@ Once installed you should be able to use the functions easily! To test, run the 
 plot_WG_map(WG_name = "Test", WG_countries = c("GBR", "USA", "AUS"))
 ```
 
-If the below plot was produced, the package is working. Don't worry if it appears a littl blurry, thats normal. Time to get started!
+If the below plot was produced, the package is working. Don't worry if it appears a little blurry, thats normal. Time to get started!
 
 ![test_plot_1](./output/test/test_plot1.PNG)
 
 ## Required Input Data frames
 Each function requires one or more input files. Example files are included in the "file_examples" subdirectory in where this documentation is located. Note these files can be named differently, just ensure you are pointing to the right file/data when you are using the functions. The package includes examples of what the data should look like once these files are uploaded into the R environment.
 
-|Input data frame | R environment name | Example filename | Original File                                          |
+|Input data frame | R environment name to check | Example filename | Original File                                          |
 |----------|--------------------|---------------------------------------------------------|
 |SOOS_WG_data| example_WG_data | SOOSWG_file_22022020.csv | This should be generated from a ".csv" file exported from AirTable. It **must** include the "Acronym" and "Countries Represented" ("Countries.Represented" also accepted) columns and be named in this way. For the use of geocode_maps, it must also contain the "Afiliation" column. |
 |country_names_data| example_country_data | country_lookup_table.txt | This should be generated from the ISO3 country names lookup table. It is manually upkept via a comma delimited ".txt" text file. It contains two columns. "Country" contains the SOOS country name and "ISO3_name" contains the corresponding ISO3 code.|
@@ -46,6 +47,7 @@ View(example_WG_data)
 ```
 
 #### Examples for generating data frames from files
+You can alter "filename" to the location of your file to read in new data.
 SOOS_WG_data:
 ```{r, eval = F, echo = T}
 maindir = "./" # this directory. Change to the directory where example data is stored
@@ -118,11 +120,11 @@ WG_maps(SOOS_WG_data = example_WG_data, outdir = "./output", country_names_data 
 geocode_maps:
 To create maps with hilighted participating countries and geocoded instititutions:
 ```{r, eval = F, echo = T}
-geocode_maps(SOOS_WG_data = example_WG_data, outdir = "./output",institution_names_data = example_country_data, country_names_data = example_country_data)
+geocode_maps(SOOS_WG_data = example_WG_data, outdir = "./output",institution_names_data = example_institution_data, country_names_data = example_country_data)
 ```
-To create maps with hilighted participating countries and geocoded instititutions:
+To create maps with no hilighted participating countries and geocoded instititutions:
 ```{r, eval = F, echo = T}
-geocode_maps(SOOS_WG_data = example_WG_data, outdir = "./output",institution_names_data = example_country_data, add_countries = F)
+geocode_maps(SOOS_WG_data = example_WG_dataa, outdir = "./output",institution_names_data = example_institution_data, add_countries = F)
 ```
 Note that country_names_data is only required when "add_countries"" is set to true (default option)
 
@@ -139,17 +141,19 @@ Create category maps with geocentroid country markers:
 ```{r, eval = F, echo = T}
 category_maps(outdir = "./output",category_data = example_category_data, country_names_data = example_country_data, plot_type = "WG", plot_legend = F)
 ```
+
+The below 3 have not been tested on my end - let me know if there are any issues please!
 Create category maps with geocoded institution markers:
 ```{r, eval = F, echo = T}
-category_maps(outdir = "./output",category_data = example_category_data, country_names_data = example_country_data, plot_type = "geocode", institution_names_data = example_institution_data, plot_legend = F)
+category_maps(SOOS_WG_data = test_WG_data, outdir = "./output",category_data = example_category_data[1:2,], country_names_data = example_country_data, plot_type = "geocode", institution_names_data = example_institution_data, plot_legend = F)
 ```
 Changing category names:
 ```{r, eval = F, echo = T}
-category_maps(outdir = "./output",category_data = example_category_data, country_names_data = example_country_data, plot_type = "geocode", institution_names_data = example_institution_data, category_names = c("A","B","C","D"))
+category_maps(SOOS_WG_data = test_WG_data, outdir = "./output",category_data = example_category_data[1:2,], country_names_data = example_country_data, plot_type = "geocode", institution_names_data = example_institution_data, category_names = c("A","B","C","D"))
 ```
 Changing legend title:
 ```{r, eval = F, echo = T}
-category_maps(outdir = "./output",category_data = example_category_data, country_names_data = example_country_data, plot_type = "geocode", institution_names_data = example_institution_data, category_names = c("A","B","C","D"), category_legend = "Grade")
+category_maps(SOOS_WG_data = test_WG_data, outdir = "./output",category_data = example_category_data[1:2,], country_names_data = example_country_data, plot_type = "geocode", institution_names_data = example_institution_data, category_names = c("A","B","C","D"), category_legend = "Grade")
 ```
 
 
@@ -181,39 +185,40 @@ If you need to edit more, but do not know how to clone a GitHub repository and c
 
 #### Changing marker styles
 It is possible to alter marker styles. You can:
+
 - change the colour of the base marker. 
-Note that the marker cannot have an outline with this option.
+Note that the marker cannot have an outline with this option. This also slows down the code quite a bit. 
 ```{r, eval = F, echo = T}
-WG_maps(example_WG_data, outdir = "./output", example_country_data)
+WG_maps(SOOS_WG_data = example_WG_data, outdir = "./output", country_names_data = example_country_data, marker_colour = "red")
 ```
 
 - change the colour of the marker dot. 
-Note that the marker cannot have an outline with this option.
+Note that the marker cannot have an outline with this option. This also slows down the code quite a bit. 
 ```{r, eval = F, echo = T}
-
+WG_maps(SOOS_WG_data = example_WG_data, outdir = "./output", country_names_data = example_country_data, marker_dot_colour = "red")
 ```
+
+To fully customise the marker, edit the marker.svg file and splot into a marker_base.svg and marker_dot.svg. Then save the marker_base.svg and marker_dot.svg to PNG files. You can point the functions to these files, like in the examples below!
 
 - change the PNG of the base marker.
 This is the best way to alter the marker to keep an outline. You can edit marker .svg files in inkscape or add a new PNG.
 ```{r, eval = F, echo = T}
-
+WG_maps(SOOS_WG_data = example_WG_data, outdir = "./output", country_names_data = example_country_data, marker_png = "./data/marker7.png")
 ```
 
 - change the PNG of the marker dot.
 This is the best way to alter the marker to keep an outline or change the size of the dot. You can edit marker .svg files in inkscape or add a new PNG.
 ```{r, eval = F, echo = T}
-
+WG_maps(SOOS_WG_data = example_WG_data, outdir = "./output", country_names_data = example_country_data, marker_dot_png = "./data/marker_dot.png")
 ```
 
 - remove the marker dot
 ```{r, eval = F, echo = T}
-
+WG_maps(SOOS_WG_data = example_WG_data, outdir = "./output", country_names_data = example_country_data, add_marker_dot = F)
 ```
 
 - remove the base marker
 ```{r, eval = F, echo = T}
-
+WG_maps(SOOS_WG_data = example_WG_data, outdir = "./output", country_names_data = example_country_data, add_marker = F)
 ```
 
-
-#### Changing category names

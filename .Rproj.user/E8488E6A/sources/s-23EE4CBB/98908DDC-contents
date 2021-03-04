@@ -1,0 +1,13 @@
+test_WG_data = example_WG_data[1:2,]
+
+WG_maps(SOOS_WG_data = test_WG_data, outdir = "./output", country_names_data = example_country_data)
+WG_maps(SOOS_WG_data = test_WG_data, outdir = "./output", country_names_data = example_country_data, add_marker = F, add_marker_dot = F)
+geocode_maps(SOOS_WG_data = test_WG_data, outdir = "./output",institution_names_data = example_institution_data, country_names_data = example_country_data)
+geocode_maps(SOOS_WG_data = test_WG_data, outdir = "./output",institution_names_data = example_institution_data, add_countries = F)
+category_maps(outdir = "./output",category_data = example_category_data[1:2,], country_names_data = example_country_data)
+category_maps(outdir = "./output",category_data = example_category_data[1:2,], country_names_data = example_country_data, plot_legend = F)
+category_maps(outdir = "./output",category_data = example_category_data[1:2,], country_names_data = example_country_data, plot_type = "WG", plot_legend = F)
+
+category_maps(SOOS_WG_data = test_WG_data, outdir = "./output",category_data = example_category_data[1:2,], country_names_data = example_country_data, plot_type = "geocode", institution_names_data = example_institution_data, plot_legend = F)
+category_maps(SOOS_WG_data = test_WG_data, outdir = "./output",category_data = example_category_data[1:2,], country_names_data = example_country_data, plot_type = "geocode", institution_names_data = example_institution_data, category_names = c("A","B","C","D"))
+category_maps(SOOS_WG_data = test_WG_data, outdir = "./output",category_data = example_category_data[1:2,], country_names_data = example_country_data, plot_type = "geocode", institution_names_data = example_institution_data, category_names = c("A","B","C","D"), category_legend = "Grade")

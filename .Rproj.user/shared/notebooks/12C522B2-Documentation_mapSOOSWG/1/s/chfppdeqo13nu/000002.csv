@@ -1,0 +1,4 @@
+"0","WG_maps(SOOS_WG_data = example_WG_data, outdir = ""./output"", country_names_data = example_country_data)"
+"2","Error in data.frame(country = WG_countries, participation = rep(1, length(WG_countries))) : 
+  arguments imply differing number of rows: 103, 2
+"
