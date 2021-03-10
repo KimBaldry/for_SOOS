@@ -23,8 +23,8 @@ library(mapSOOSWG)
 ```
 
 Once installed you should be able to use the functions easily! To test, run the following code:
-```{r, eval = F, echo = T}
-plot_WG_map(WG_name = "Test", WG_countries = c("GBR", "USA", "AUS"))
+```{r, eval = F, echo = T} 
+plot_WG_map(WG_name = "Test", WG_countries = data.frame("ISO3" = c("GBR", "USA", "AUS")))
 ```
 
 If the below plot was produced, the package is working. Don't worry if it appears a little blurry, thats normal. Time to get started!
@@ -67,7 +67,7 @@ country_names_data:
 filename = file.path(maindir, "file_examples", "country_lookup_table.txt")
 
 # read the file
-data = read.csv(lookupfile, header = T, stringsAsFactors = F,strip.white = T)
+data = read.csv(filename, header = T, stringsAsFactors = F,strip.white = T)
 
 ```
 
@@ -77,7 +77,7 @@ institution_names_data:
 filename =  file.path(maindir, "file_examples", "Mapping institutes.csv")
 
 # read the file
-data = read.csv(inst_LT, header = T, stringsAsFactors = F,strip.white = T)
+data = read.csv(filename, header = T, stringsAsFactors = F,strip.white = T)
 colnames(data) = gsub("ï..","",colnames(data)) # this is a bug that can occur from excel (yay excel)
 ```
 
@@ -87,7 +87,7 @@ category_data:
 filename = file.path(maindir, "file_examples", "Category_example_file.csv")
 
 # read the file
-data = read.csv(cat_table, header = T, stringsAsFactors = F,strip.white = T)
+data = read.csv(filename, header = T, stringsAsFactors = F,strip.white = T)
 colnames(data) = gsub("ï..","",colnames(data)) # this is a bug that can occur from excel (yay excel)
 ```
 
